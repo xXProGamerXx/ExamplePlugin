@@ -1,22 +1,25 @@
-package ExamplePlugin;
+/*
+
+    NukkitX Example Plugin
+
+    Written by xXProGamerXx (Charlie#2521)
+
+
+    Some source was used from the original example plugin
+ */
+
+package cn.nukkit.exampleproject;
 
 import cn.nukkit.command.Command;
 import cn.nukkit.command.CommandSender;
 import cn.nukkit.plugin.PluginBase;
 import cn.nukkit.utils.Config;
 import cn.nukkit.utils.TextFormat;
-import cn.nukkit.utils.Utils;
 
 import java.io.File;
-import java.io.IOException;
 import java.util.LinkedHashMap;
 
-/**
- * author: MagicDroidX
- * NukkitExamplePlugin Project
- */
-public class MainClass extends PluginBase {
-
+public class ExamplePlugin extends PluginBase {
     @Override
     public void onLoad() {
         this.getLogger().info(TextFormat.WHITE + "I've been loaded!");
@@ -28,16 +31,6 @@ public class MainClass extends PluginBase {
 
         this.getLogger().info(String.valueOf(this.getDataFolder().mkdirs()));
 
-        //Register the EventListener
-        this.getServer().getPluginManager().registerEvents(new EventListener(this), this);
-
-        //PluginTask
-        this.getServer().getScheduler().scheduleRepeatingTask(new BroadcastPluginTask(this), 200);
-
-        //Save resources
-        this.saveResource("string.txt");
-
-        //Config reading and writing
         Config config = new Config(
                 new File(this.getDataFolder(), "config.yml"),
                 Config.YAML,
@@ -61,16 +54,11 @@ public class MainClass extends PluginBase {
 
     @Override
     public boolean onCommand(CommandSender sender, Command command, String label, String[] args) {
-        switch (command.getName()) {
+        switch (command.getName().toLowerCase()) {
             case "example":
-                try {
-                    this.getLogger().info(Utils.readFile(new File(this.getDataFolder(), "string.txt")) + " " + sender.getName());
-                } catch (IOException e) {
-                    throw new RuntimeException(e);
-                }
+                this.getLogger().info(sender.getName() + " executed the /example command");
                 break;
         }
         return true;
     }
-
 }
